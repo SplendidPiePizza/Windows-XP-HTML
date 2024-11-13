@@ -10,22 +10,38 @@
 <body>
     <div id="desktop">
         <div id="taskbar">
-            <div class="start-button">Start</div>
+            <div class="start-button" id="start-btn">Start</div>
             <div class="taskbar-right">
                 <div class="time">3:15 PM</div>
             </div>
         </div>
 
+        <!-- Start Menu -->
+        <div id="start-menu" class="start-menu">
+            <div class="start-menu-item" id="programs">
+                <p>Programs</p>
+            </div>
+            <div class="start-menu-item" id="my-computer">
+                <p>My Computer</p>
+            </div>
+            <div class="start-menu-item" id="my-documents">
+                <p>My Documents</p>
+            </div>
+            <div class="start-menu-item" id="shutdown">
+                <p>Shutdown</p>
+            </div>
+        </div>
+
         <div id="icons">
-            <div class="desktop-icon" id="my-computer">
+            <div class="desktop-icon" id="my-computer-icon">
                 <img src="images/my_computer.png" alt="My Computer">
                 <p>My Computer</p>
             </div>
-            <div class="desktop-icon" id="internet-explorer">
+            <div class="desktop-icon" id="internet-explorer-icon">
                 <img src="images/internet_explorer.png" alt="Internet Explorer">
                 <p>Internet Explorer</p>
             </div>
-            <div class="desktop-icon" id="my-documents">
+            <div class="desktop-icon" id="my-documents-icon">
                 <img src="images/my_document.png" alt="My Documents">
                 <p>My Documents</p>
             </div>

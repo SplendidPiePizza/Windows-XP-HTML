@@ -1,102 +1,112 @@
-// Initial time setup
+// Time setup
 let hour = 12;  // Start at 12:00 AM
 let minute = 0; // Start at 00 minutes
 let second = 0; // Start at 00 seconds
 
 // Function to format time as HH:MM AM/PM
 function formatTime(hour, minute, second) {
-    // Convert hour to 12-hour format and determine AM/PM
-    let period = hour >= 12 ? 'AM' : 'PM';  // We want AM/PM, so this is the correct condition
-    let formattedHour = hour % 12;
-    formattedHour = formattedHour === 0 ? 12 : formattedHour; // Handle midnight (0) as 12
-    const formattedMinute = minute < 10 ? '0' + minute : minute;
-    const formattedSecond = second < 10 ? '0' + second : second;
-    
+    const period = hour >= 12 ? 'AM' : 'PM';  // AM or PM
+    let formattedHour = hour % 12 || 12; // 12-hour format, handle midnight (0) as 12
+    const formattedMinute = minute < 10 ? `0${minute}` : minute;
+    const formattedSecond = second < 10 ? `0${second}` : second;
     return `${formattedHour}:${formattedMinute}:${formattedSecond} ${period}`;
 }
 
 // Function to update the time every second
 function updateTime() {
-    // Select the element in the taskbar that displays the time
     const timeElement = document.querySelector('.time');
+    timeElement.textContent = formatTime(hour, minute, second);  // Format and show time
 
-    // Format and display the time
-    timeElement.textContent = formatTime(hour, minute, second);
-
-    // Increment second
     second++;
 
-    // If second reaches 59, increment minute and reset second
     if (second === 60) {
         second = 0;
         minute++;
     }
 
-    // If minute reaches 60, increment hour and reset minute
     if (minute === 60) {
         minute = 0;
         hour++;
     }
 
-    // If hour reaches 12:00 AM, reset hour, minute, and second to 12:00 AM
-    if (hour === 12 && minute === 0 && second === 0) {
-        hour = 12; // Reset hour to 12
-        minute = 0; // Reset minute to 00
-        second = 0; // Reset second to 00
+    if (hour === 24) {  // Reset at 12:00 AM
+        hour = 0;
     }
 }
 
-// Ensure the time is updated when the page loads
-window.onload = function() {
-    // Set the time to 12:00 AM when the page first loads
-    hour = 12;
-    minute = 0;
-    second = 0;
-
-    // Update the time immediately when the page loads
-    updateTime();
-
-    // Update the time every second (1000 milliseconds)
-    setInterval(updateTime, 1000); // Update every 1 second
+// Update time when the page loads
+window.onload = function () {
+    updateTime();  // Set initial time
+    setInterval(updateTime, 1000);  // Update time every second
 };
 
-// Get elements
-var startBtn = document.getElementById("start-btn");
-var startMenu = document.getElementById("start-menu");
-var modal = document.getElementById("modal");
-var closeModal = document.getElementById("close-modal");
+// Start menu toggle logic
+const startBtn = document.getElementById("start-btn");
+const startMenu = document.getElementById("start-menu");
+const modal = document.getElementById("modal");
+const closeModal = document.getElementById("close-modal");
+const colorPickerModal = document.getElementById("color-picker-modal");
+const closeColorModal = document.getElementById("close-color-modal");
+const colorPicker = document.getElementById("color-picker");
 
 // Toggle start menu visibility
-startBtn.addEventListener("click", function() {
-    // Toggle the display of the start menu
-    if (startMenu.style.display === "block") {
-        startMenu.style.display = "none";
-    } else {
-        startMenu.style.display = "block";
-    }
+startBtn.addEventListener("click", function () {
+    startMenu.style.display = startMenu.style.display === "block" ? "none" : "block";
 });
 
 // Close the start menu if clicked outside
-window.addEventListener("click", function(event) {
+window.addEventListener("click", function (event) {
     if (!startBtn.contains(event.target) && !startMenu.contains(event.target)) {
         startMenu.style.display = "none";
     }
 });
 
 // Open modal for "My Computer"
-document.getElementById("my-computer").addEventListener("click", function() {
+document.getElementById("my-computer").addEventListener("click", function () {
     modal.style.display = "flex";
 });
 
 // Close modal
-closeModal.addEventListener("click", function() {
+closeModal.addEventListener("click", function () {
     modal.style.display = "none";
 });
 
-// Close modal if clicked outside
-window.addEventListener("click", function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
+// Open color picker modal when "Solid Color" is clicked
+document.getElementById("change-background").addEventListener("click", function () {
+    const changeBackgroundMenu = document.createElement('div');
+    changeBackgroundMenu.classList.add('start-menu-item');
+    changeBackgroundMenu.innerHTML = `
+        <div class="start-menu-item" id="bliss">
+            <p>Bliss (Windows XP background)</p>
+        </div>
+        <div class="start-menu-item" id="solid-color">
+            <p>Solid Color</p>
+        </div>
+    `;
+    startMenu.appendChild(changeBackgroundMenu);
 
+    // Handle Bliss background option
+    document.getElementById('bliss').addEventListener('click', function () {
+        document.body.style.backgroundImage = 'url(images/bliss.jpg)';
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+        document.body.style.backgroundAttachment = 'fixed';
+        startMenu.removeChild(changeBackgroundMenu);
+    });
+
+    // Handle Solid Color option
+    document.getElementById('solid-color').addEventListener('click', function () {
+        colorPickerModal.style.display = 'flex';
+        startMenu.removeChild(changeBackgroundMenu);
+    });
+});
+
+// Close color picker modal
+closeColorModal.addEventListener("click", function () {
+    colorPickerModal.style.display = "none";
+});
+
+// Change background to selected color
+colorPicker.addEventListener("input", function () {
+    document.body.style.backgroundColor = colorPicker.value;
 });

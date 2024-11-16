@@ -22,7 +22,7 @@ Just click the index.html and the browser will open or by just copying the file 
 ### Option 3
 
 If you have php installed, you can start localhost by using these commands
-`php -S localhost:8080`
+`php -S localhost:8080` If it sucessfully started localhost type localhost:8080 in your browser url
 
  some of the images were from mirosoft, All rights reserved to Microsoft.
-If it sucessfully started localhost type localhost:8080 in your browser url
+

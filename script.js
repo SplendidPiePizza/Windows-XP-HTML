@@ -61,8 +61,13 @@ window.addEventListener("click", function (event) {
     }
 });
 
-// Open modal for "My Computer"
+// Open modal for "My Computer" from start menu
 document.getElementById("my-computer").addEventListener("click", function () {
+    modal.style.display = "flex";
+});
+
+// Open modal for "My Computer" from desktop icon
+document.getElementById("my-computer-icon").addEventListener("click", function () {
     modal.style.display = "flex";
 });
 
@@ -91,12 +96,14 @@ document.getElementById("change-background").addEventListener("click", function 
         document.body.style.backgroundSize = 'cover';
         document.body.style.backgroundPosition = 'center';
         document.body.style.backgroundAttachment = 'fixed';
+        document.body.style.backgroundColor = '';  // Remove solid color if any
         startMenu.removeChild(changeBackgroundMenu);
     });
 
     // Handle Solid Color option
     document.getElementById('solid-color').addEventListener('click', function () {
         colorPickerModal.style.display = 'flex';
+        document.body.style.backgroundImage = '';  // Remove Bliss background if set
         startMenu.removeChild(changeBackgroundMenu);
     });
 });
@@ -109,4 +116,9 @@ closeColorModal.addEventListener("click", function () {
 // Change background to selected color
 colorPicker.addEventListener("input", function () {
     document.body.style.backgroundColor = colorPicker.value;
+});
+
+// Open shutdown page when "Shutdown" is clicked
+document.getElementById("shutdown").addEventListener("click", function () {
+    window.location.href = "shutdown.html";  // Redirect to shutdown page
 });
